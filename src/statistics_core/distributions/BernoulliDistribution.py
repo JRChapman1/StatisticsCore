@@ -1,9 +1,10 @@
 import numpy as np
+from math import floor
 
-from statistics_core.distributions.base import Distribution
+from src.statistics_core.distributions.base import DiscreteDistribution
 
 
-class BernoulliDistribution(Distribution):
+class BernoulliDistribution(DiscreteDistribution):
 
     def __init__(self, p: float) -> None:
 
@@ -21,3 +22,25 @@ class BernoulliDistribution(Distribution):
     def sample(self, n):
         successes = np.random.uniform(low=0.0, high=1.0, size=n) <= self.p
         return np.where(successes, 1, 0)
+
+    def cdf(self, x):
+        if floor(x) <= 0:
+            return 1 - self.p
+        return 1.0
+
+    def icdf(self, p):
+        if p < self.p:
+            return 0
+        else:
+            return 1
+
+    def pmf(self, x):
+        if x == 0:
+            return 1 - self.p
+        elif x == 1:
+            return self.p
+        else:
+            return 0
+            
+    def moment(self, n):
+        raise NotImplementedError() # TODO

@@ -5,30 +5,25 @@ from functools import cache
 from src.statistics_core.distributions.base import DiscreteDistribution
 
 
-class BinomialDistribution(DiscreteDistribution):
+class NegativeBinomialDistribution(DiscreteDistribution):
 
-    def __init__(self, p: float, n: int) -> None:
+    def __init__(self, p: float, k: int) -> None:
         self.p = p
-        self.n = n
-
-    @property
-    def _state_space(self) -> np.ndarray:
-        return np.arange(0, self.n + 1)
+        self.k = k
 
     def _calculate_mean(self) -> float:
-        return self.p * self.n
+        return self.k / self.p
 
     def _calculate_variance(self) -> float:
-        return self.n * self.p * (1 - self.p)
+        return self.k * (self.k + 1) / self.p ** 2
 
     def sample(self, num_sims: int) -> np.ndarray:
-        successes = np.random.random((num_sims, self.n)) <= self.p
-        return np.where(successes, 1, 0).sum(axis=1)
+        raise NotImplementedError() # TODO
 
     @cache
     def pmf(self, x: int | float) -> float:
-        if (x == int(x)) and (0 <= x <= self.n):
-            return self.p ** x * (1 - self.p) ** (self.n - x) * comb(self.n, x)
+        if (x == int(x)) and (x >= self.k):
+            return self.p ** self.k * (1 - self.p) ** (x - self.k) * comb(x - 1, self.k - 1)
         return 0.0
 
     @cache
@@ -48,6 +43,3 @@ class BinomialDistribution(DiscreteDistribution):
     def moment(self, n):
         raise NotImplementedError() # TODO
 
-if __name__ == '__main__':
-    d = BinomialDistribution(0.7, 100)
-    print(d.icdf(0.5))

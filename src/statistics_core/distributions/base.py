@@ -26,17 +26,27 @@ class Distribution(ABC):
         pass
 
     @abstractmethod
-    def pdf(self, x):
-        pass
-
-    @abstractmethod
     def cdf(self, x):
         pass
 
     @abstractmethod
-    def ipdf(self, x):
+    def icdf(self, p):
+        pass
+
+
+class ContinuousDistribution(Distribution):
+
+    @abstractmethod
+    def ipdf(self, p):
         pass
 
     @abstractmethod
-    def icdf(self, x):
+    def pdf(self, x):
+        pass
+
+
+class DiscreteDistribution(Distribution):
+
+    @abstractmethod
+    def pmf(self, x):
         pass
