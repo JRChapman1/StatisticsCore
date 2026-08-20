@@ -1,5 +1,4 @@
 import numpy as np
-from math import floor
 
 from src.statistics_core.distributions.base import DiscreteDistribution
 
@@ -19,20 +18,29 @@ class BernoulliDistribution(DiscreteDistribution):
     def _calculate_variance(self):
         return self.p * (1 - self.p)
 
-    def sample(self, n):
+    def simulate(self, n):
         successes = np.random.uniform(low=0.0, high=1.0, size=n) <= self.p
         return np.where(successes, 1, 0)
 
     def cdf(self, x):
-        if floor(x) <= 0:
-            return 1 - self.p
+        # CDF for Bernoulli: P(X <= x) = 0 for x < 0; = 1-p for 0 <= x < 1; = 1 for x >= 1
+        if x < 0:
+            return 0.0
+        if x < 1:
+            return 1.0 - self.p
         return 1.0
 
     def icdf(self, p):
-        if p < self.p:
+        # inverse CDF (quantile): smallest x such that CDF(x) >= p
+        # Handle both scalar and array inputs
+        if isinstance(p, np.ndarray):
+            return np.array([self.icdf(pi) for pi in p.flat]).reshape(p.shape)
+        
+        if not 0 <= p <= 1:
+            raise ValueError("p must be between 0 and 1")
+        if p <= 1.0 - self.p:
             return 0
-        else:
-            return 1
+        return 1
 
     def pmf(self, x):
         if x == 0:

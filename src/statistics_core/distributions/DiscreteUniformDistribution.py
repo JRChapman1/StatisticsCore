@@ -29,7 +29,7 @@ class DiscreteUniformDistribution(DiscreteDistribution):
     def _calculate_variance(self) -> float:
         return self.step_size ** 2 * ((self.num_steps + 1) ** 2 - 1) / 12
 
-    def sample(self, n: int) -> np.ndarray:
+    def simulate(self, n: int) -> np.ndarray:
         return self.lower + self.step_size * np.random.randint(0, self.num_steps+1, n)
 
     def pmf(self, x: int | float) -> float:

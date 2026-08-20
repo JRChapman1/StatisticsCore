@@ -15,9 +15,24 @@ $$
 
 ## CDF
 
-For $x \in \mathcal{S}_X$
+For $x \in \mathcal{S}$ we have
 $$
-P(X \le x) = \sum_{i \le x} P(X=x) = \sum_{i \le x} \frac{1}{k+1}
+F_X(x) = P(X \le x) = \sum_{i \le x} P(X=x) = \sum_{i \le x} \frac{1}{k+1} = \frac{\frac{x-a}{s} + 1}{k+1}
+$$
+For $x \in \mathbb{R}$ such that $a \le x \le b$ we thus have
+$$
+F_X(x) = \frac{\lfloor \frac{x-a}{s} \rfloor + 1}{k+1}
+$$
+
+## Inverse CDF
+
+For $x \in \mathcal{S}$ we have
+$$
+x = \frac{\frac{F_X(x) - a}{s} + 1}{k+1}
+$$
+Rearranging this gives
+$$
+F_X^{-1}(x) = (x (k+1) - 1) s + a
 $$
 
 ## Mean
@@ -74,6 +89,17 @@ p & \text{if } x = 1 \\
 \end{cases} \hspace{20mm} \forall x \in \mathcal{S}_X
 $$
 
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+P(X \le x) = \sum_{i \le x} P(X=x) = 
+\begin{cases}
+1-p & \forall x < 1  \\
+1 & \forall x \geq 1
+\end{cases}
+$$
+
 ## Mean
 
 $$
@@ -107,6 +133,14 @@ Here:
 * $(1-p)^{n-x}$ represents the probability of $n-x$ failures
 * So $p^x(1-p)^{n-x}$ represents the probability of a specific sequence of $x$ successes and $n-x$ failures from $n$ trials
 * and ${{n}\choose{x}}$ represents the number of such sequences.
+
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+P(X \le x) = \sum_{i=0}^x P(X=x) = \sum_{i=0}^x p^x (1-p)^{n-x} {{n}\choose{x}}
+$$
+There is no closed-form solution for the CDF.
 
 ## Mean
 
@@ -153,6 +187,19 @@ $$
 P(X=x) = p (1-p)^{x-1} \hspace{20mm} \forall x \in \mathcal{S}_X
 $$
 Here $p$ represents the probability of one success and $(1-p)^{x-1}$ represents the probability of $x-1$ failures. There is only one possible order ($x-1$ failures followed by one success) than results in $x$ trials being required to obtain the first success.
+
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+\begin{align}
+P(X \le x) =& \sum_{i=1}^x P(X=x) \\\\
+=& \sum_{i=1}^x p (1-p)^{x-1} \\\\
+=& p \sum_{i=0}^{x-1} (1-p)^{x} \\\\
+&= p \frac{1 - (1-p)^{x}}{1 - (1-p)} \\\\
+&= 1 - (1-p)^{x}
+\end{align}
+$$
 
 ## Mean
 
@@ -204,6 +251,14 @@ The result of the $x^\text{th}$ trial must be a success for $X$ to be equal to $
 $$
 P(X=x) = p^k (1-p)^{x-k} {{x-1}\choose{k-1}} \hspace{20mm} \forall x \in \mathcal{S}_X
 $$
+
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+P(X \le x) = \sum_{i=0}^x P(X=x) = \sum_{i=k}^x p^k (1-p)^{x-k} {{x-1}\choose{k-1}}
+$$
+There is no closed-form solution for the CDF.
 
 ## Mean
 
@@ -270,6 +325,14 @@ $$
 P(X_n = x) = \frac{{{k}\choose{x}} {{N-k}\choose{n-x}}}{{{N}\choose{n}} {{n}\choose{x}}} \times {{n}\choose{x}} = \frac{{{k}\choose{x}} {{N-k}\choose{n-x}}}{{{N}\choose{n}}} 
 $$
 
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+P(X \le x) = \sum_{i=0}^x P(X=x) = \sum_{i=0}^x \frac{{{k}\choose{x}} {{N-k}\choose{n-x}}}{{{N}\choose{n}}}
+$$
+There is no closed-form solution for the CDF.
+
 ## Mean
 
 $$
@@ -313,6 +376,8 @@ $$
 
 The Poisson distribution is a limiting case of a Binomial distribution as the number of trials, $n$, tends to infinity and the probability of success per trial, $p$, tends to zero with the product $np$ remaining constant.
 
+A Poisson random variable, $X$, represents the number of events occurring in a fixed interval of time or space. It has state space $\mathcal{S}_X = \{ 0, 1, 2, \dots \}$.
+
 The parameter $\lambda$ is known as the 'rate' of the process, representing the frequency with which events occur. Events are assumed to occur independently and one-at-a-time.
 
 ## PMF
@@ -332,6 +397,14 @@ P(X=x) &= \lim_{n \to \infty} \left[ \frac{n!}{x! (n-x)!} \left( \frac{\lambda}{
 &= \frac{\lambda^x e^{-\lambda}}{x!} \hspace{20mm} \text{since } \lim_{k \rightarrow \infty} \left( 1+\frac{z}{k} \right)^{k} = e^{z}
 \end{align}
 $$
+
+## CDF
+
+For $x \in \mathbb{R}$ such that $a \le x \le b$
+$$
+P(X \le x) = \sum_{i=0}^x P(X=x) = \sum_{i=0}^x \frac{\lambda^x e^{-\lambda}}{x!}
+$$
+There is no closed-form solution for the CDF.
 
 ## Mean
 
